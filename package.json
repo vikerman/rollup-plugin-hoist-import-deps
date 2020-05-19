@@ -1,0 +1,48 @@
+{
+  "name": "rollup-plugin-hoist-import-deps",
+  "version": "0.1.0",
+  "description": "Preload static imports of a chunk when it is dynamically imported",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "test": "npm run build && ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikerman/rollup-plugin-hoist-import-deps.git"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "rollup",
+    "plugin",
+    "rollup-plugins",
+    "preload",
+    "module"
+  ],
+  "author": "Vikram Subramanian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues"
+  },
+  "homepage": "https://github.com/vikerman/rollup-plugin-hoist-import-deps#readme",
+  "devDependencies": {
+    "ava": ",^3.8.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.10.3"
+  },
+  "dependencies": {
+    "estree-walker": "^2.0.1",
+    "magic-string": "^0.25.7"
+  },
+  "ava": {
+    "files": [
+      "**/test/**",
+      "!**/fixtures/**",
+      "!**/output/**"
+    ]
+  }
+}
