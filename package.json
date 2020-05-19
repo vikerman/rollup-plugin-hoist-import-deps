@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "Preload static imports of a chunk when it is dynamically imported",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "test": "npm run build && ava"
