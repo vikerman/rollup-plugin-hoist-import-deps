@@ -197,7 +197,7 @@ astral-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-"ava@,^3.8.2":
+ava@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/ava/-/ava-3.8.2.tgz#877c9eb861763a185bbabd54f359e1fbe57d1754"
   integrity sha512-sph3oUsVTGsq4qbgeWys03QKCmXjkZUO3oPnFWXEW6g1SReCY9vuONGghMgw1G6VOzkg1k+niqJsOzwfO8h9Ng==
