@@ -78,6 +78,50 @@ With the plugin the output chunks for `a.js` would be transformed to look
 something like:
 
 ```js
+const seen = new Set();␊
+function __loadDeps(baseImport, ...deps) {
+  if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
+    for (const dep of deps) {
+      if (seen.has(dep)) continue;
+      const el = document.createElement('link');
+      Object.assign(el, { href: dep, rel: 'preload', as: 'script', crossorigin: 'anonymous', onload: () => el.remove() });
+      document.head.appendChild(el);
+      seen.add(dep);
+    }
+  }
+  return baseImport;
+}
+
+async function myFunction(x) {
+  const { inc } = await __loadDeps(import('./b-467ea706.js'), './c-a66d9c36.js');
+
+  return x * inc(x);
+}
+
+export { myFunction };
+```
+
+So when `./b-467ea706.js` is dynamically imported it avoids the JS load
+waterfall where its static import `./c-a66d9c36.js` is loaded in parallel
+instead of sequentially after downloading and parsing the chunk
+`./b-467ea706.js`.
+
+This plugin can make a significant (positive) difference when say lazily loading
+code over a slow/high latency 3G connection (in the order of 1-2 seconds).
+
+## Preload Vs. Dynamic Import
+
+By default the plugin uses `preload` link tags as the method to preload the
+dependencies. It can be set to use dynamic imports instead by passing `{method: 'import'}` to the plugin.
+
+```js
+  ...
+   plugins: [hoistImportDeps({method: 'import'})],
+```
+
+The ouput chunk then looks like:
+
+```js
 function __loadDeps(baseImport, ...deps) {
   for (const dep of deps) {
     import(dep);
@@ -94,15 +138,15 @@ async function myFunction(x) {
 export { myFunction };
 ```
 
-So when `./b-467ea706.js` is dynamically imported it avoids the JS load waterfall where its static import `./c-a66d9c36.js` is loaded in parallel instead of sequentially after downloading and parsing the chunk
-`./b-467ea706.js`.
+Using preload link tags preserves the load order of the transitive imports of
+the dynamically loaded chunk. However it is not supported in all browsers
+including Firefox where it is behind a flag. The full compatibility across
+browsers can be found [here](https://caniuse.com/#feat=link-rel-preload).
 
-This plugin can make a significant (positive) difference when say lazily loading code over a slow/high latency 3G connection (in the order of 1-2 seconds).
-
-## Caveat
-
-One thing to notice is that the transformation can affect the implicit load
-order which could be a problem if the imported chunks have side-effects and your program relies on the order on loading of these chunks.
-
-In general, it is better not to rely on the loading order and it is especially
-important when using this plugin.
+Dynamic imports on the other hand should be transformed properly to support
+all browsers when using the right rollup config (For example using the
+[legacyBuild](https://open-wc.org/building/building-rollup.
+html#supporting-older-browsers) in open-wc). However using dynamic imports will
+load the transitive static imports out of order. This could cause issues if
+there are side effects when loading the modules and if the program relies upon
+the original order of loading these modules.

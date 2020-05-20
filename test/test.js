@@ -8,24 +8,27 @@ process.chdir(__dirname);
 
 // Test with all output formats that support code splitting.
 const FORMATS = ['es', 'system', 'cjs', 'amd'];
+const METHODS = ['preload', 'import'];
 
-FORMATS.forEach(format =>
-  test(`${format}:simple`, async t => {
-    // Produce output with plugin.
-    const bundle = await rollup({
-      input: './fixtures/simple/a.js',
-      plugins: [hoistImportDeps()],
-      onwarn: _ => null,
-    });
-    await bundle.write({ format, dir: `./output/${format}` });
+METHODS.forEach(method => {
+  FORMATS.forEach(format =>
+    test(`${format}:${method}:simple`, async t => {
+      // Produce output with plugin.
+      const bundle = await rollup({
+        input: './fixtures/simple/a.js',
+        plugins: [hoistImportDeps({ method })],
+        onwarn: _ => null,
+      });
+      await bundle.write({ format, dir: `./output/${format}/${method}` });
 
-    // Compare with snapshot.
-    t.snapshot(fs.readFileSync(`./output/${format}/a.js`).toString());
+      // Compare with snapshot.
+      t.snapshot(fs.readFileSync(`./output/${format}/${method}/a.js`).toString());
 
-    // Load the output to sanity check the produced code.
-    if (format == 'cjs') {
-      const { threeXPlusOne } = require('./output/cjs/a.js');
-      t.is(await threeXPlusOne(20), 61);
-    }
-  }),
-);
+      // Load the output to sanity check the produced code.
+      if (format == 'cjs') {
+        const { threeXPlusOne } = require(`./output/cjs/${method}/a.js`);
+        t.is(await threeXPlusOne(20), 61);
+      }
+    }),
+  );
+});
