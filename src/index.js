@@ -4,7 +4,9 @@ import MagicString from 'magic-string';
 const VIRTUAL_ID_IMPORT = 'preloaddeps:import';
 const MARKER = '"__IMPORT_DEPS__"';
 
-export function hoistImportDeps() {
+export function hoistImportDeps(options) {
+  options = options || { method: 'preload' };
+
   // Get the static deps of a chunk and return them as list lietral of strings
   // that can be passed as arguments to module preload method(__loadeDeps).
   const getDeps = (chunkName, bundle) => {
@@ -21,8 +23,8 @@ export function hoistImportDeps() {
     const chunk = bundle[name];
     if (chunk && chunk.imports.length > 0) {
       const ret = chunk.imports
-        // remove the .js extension if it's AMD.
-        .map(s => `"./${amd ? s.substring(0, s.length - 3) : s}"`)
+        // remove the .js extension if it's AMD and using dynamic import method.
+        .map(s => `"./${amd && options.method === 'import' ? s.substring(0, s.length - 3) : s}"`)
         .join(',');
       return ret;
     } else {
@@ -44,12 +46,28 @@ export function hoistImportDeps() {
     // The actual preloading mechanism can be configured in the plugin.
     load(id) {
       if (id === VIRTUAL_ID_IMPORT) {
-        return `export function __loadDeps(baseImport, ...deps) {
+        if (options.method === 'import') {
+          return `export function __loadDeps(baseImport, ...deps) {
   for (const dep of deps) {
     import(dep);
   }
   return baseImport;
 }`;
+        } else {
+          return `const seen = new Set();
+export function __loadDeps(baseImport, ...deps) {
+  if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
+    for (const dep of deps) {
+      if (seen.has(dep)) continue;
+      const el = document.createElement('link');
+      Object.assign(el, { href: dep, rel: 'preload', as: 'script', crossorigin: 'anonymous', onload: () => el.remove() });
+      document.head.appendChild(el);
+      seen.add(dep);
+    }
+  }
+  return baseImport;
+}`;
+        }
       }
       return null;
     },
