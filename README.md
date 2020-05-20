@@ -145,8 +145,7 @@ browsers can be found [here](https://caniuse.com/#feat=link-rel-preload).
 
 Dynamic imports on the other hand should be transformed properly to support
 all browsers when using the right rollup config (For example using the
-[legacyBuild](https://open-wc.org/building/building-rollup.
-html#supporting-older-browsers) in open-wc). However using dynamic imports will
-load the transitive static imports out of order. This could cause issues if
-there are side effects when loading the modules and if the program relies upon
-the original order of loading these modules.
+[legacyBuild](https://open-wc.org/building/building-rollup.html#supporting-older-browsers) in open-wc).
+However using dynamic imports will load the transitive static imports out of order.
+This could cause issues if there are side effects when loading the modules and if the program
+relies upon the original order of loading these modules.
