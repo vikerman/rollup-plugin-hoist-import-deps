@@ -90,10 +90,12 @@ export function __loadDeps(baseImport, ...deps) {
       if (id === VIRTUAL_ID_IMPORT) {
         return null;
       }
-      const firstpass = /import\([^\)]+\)/;
+
+      const firstpass = /import\s*\([^\)]+\)/;
       if (!code.match(firstpass)) {
         return null;
       }
+
       let ast = null;
       try {
         ast = this.parse(code);
@@ -108,16 +110,19 @@ export function __loadDeps(baseImport, ...deps) {
       }
 
       const magicString = new MagicString(code);
-      magicString.prepend(`import {__loadDeps} from '${VIRTUAL_ID_IMPORT}';\n`);
-
+      let hasDynamicImport = false;
       walk(ast, {
         enter(node) {
           if (node.type === 'ImportExpression') {
+            hasDynamicImport = true;
             magicString.prependLeft(node.start, '__loadDeps(');
             magicString.appendRight(node.end, `, ${MARKER})`);
           }
         },
       });
+      if (hasDynamicImport) {
+        magicString.prepend(`import {__loadDeps} from '${VIRTUAL_ID_IMPORT}';\n`);
+      }
 
       return {
         code: magicString.toString(),
