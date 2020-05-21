@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.2.0...v0.3.0) (2020-05-21)
+
+
+### Bug Fixes
+
+* don't inject load script unless AST says so ([1360b2f](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/1360b2fe34276d52ed672c2acab7964b85da1237))
+
+
+
 # [0.2.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.1.0...v0.2.0) (2020-05-20)
 
 
