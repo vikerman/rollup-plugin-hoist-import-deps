@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",
-    "test": "npm run build && ava"
+    "test": "npm run build && ava",
+    "test:update-snapshots": "npm run build && ava --update-snapshots"
   },
   "repository": {
     "type": "git",

@@ -102,7 +102,7 @@ export function __loadDeps(baseImport, ...deps) {
       } catch (err) {
         this.warn({
           code: 'PARSE_ERROR',
-          message: `rollup-plugin-hoist-import-deps: failed to parse ${id}.`,
+          message: `rollup-plugin-hoist-import-deps: failed to parse ${id}.\n${err}`,
         });
       }
       if (!ast) {
@@ -120,14 +120,16 @@ export function __loadDeps(baseImport, ...deps) {
           }
         },
       });
-      if (hasDynamicImport) {
+      if (!hasDynamicImport) {
+        return null;
+      } else {
         magicString.prepend(`import {__loadDeps} from '${VIRTUAL_ID_IMPORT}';\n`);
-      }
 
-      return {
-        code: magicString.toString(),
-        map: magicString.generateMap({ hires: true }),
-      };
+        return {
+          code: magicString.toString(),
+          map: magicString.generateMap({ hires: true }),
+        };
+      }
     },
 
     // Transform
@@ -157,7 +159,7 @@ export function __loadDeps(baseImport, ...deps) {
         } catch (err) {
           this.warn({
             code: 'PARSE_ERROR',
-            message: `rollup-plugin-hoist-import-deps: failed to parse ${chunk.fileName}.`,
+            message: `rollup-plugin-hoist-import-deps: failed to parse ${chunk.fileName}.\n${err}`,
           });
         }
         if (!ast) {
