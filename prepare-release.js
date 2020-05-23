@@ -74,7 +74,13 @@ async function commitAndPush() {
     process.exit(0);
   }
 
-  exec(`git push origin && git push origin --tags"`, err => {
+  exec(`git push origin`, err => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+  });
+  exec(`git push origin --tags`, err => {
     if (err) {
       console.error(err);
       process.exit(1);
