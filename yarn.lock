@@ -220,7 +220,7 @@ astral-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-ava@^3.8.2:
+ava@3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/ava/-/ava-3.8.2.tgz#877c9eb861763a185bbabd54f359e1fbe57d1754"
   integrity sha512-sph3oUsVTGsq4qbgeWys03QKCmXjkZUO3oPnFWXEW6g1SReCY9vuONGghMgw1G6VOzkg1k+niqJsOzwfO8h9Ng==
@@ -2254,14 +2254,14 @@ reusify@^1.0.4:
   resolved "https://registry.yarnpkg.com/reusify/-/reusify-1.0.4.tgz#90da382b1e126efc02146e90845a88db12925d76"
   integrity sha512-U9nH88a3fc/ekCF1l0/UP1IosiuIjyTh7hBvXVMHYgVcfGvt897Xguj2UOLDeI5BG2m7/uwyaLVT6fbtCwTyzw==
 
-rimraf@^3.0.0, rimraf@^3.0.2:
+rimraf@3.0.2, rimraf@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
 
-rollup@^2.10.3:
+rollup@2.10.3:
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.10.3.tgz#b024155a93a13412ff547764f8fd4f67fbf64f51"
   integrity sha512-Pw4isow3qDZvIozWtEBSZckSxpZgAj11hLijykaO/qZLNq4VGZVZOANBzoWlMabTtg9edQTe3pkLU39PoIkOeg==
@@ -2295,15 +2295,15 @@ semver-diff@^3.1.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
 
+semver@7.3.2:
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
+  integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
+
 semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
-
-semver@^7.3.2:
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
-  integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
 
 serialize-error@^2.1.0:
   version "2.1.0"
@@ -2418,7 +2418,7 @@ stack-utils@^2.0.2:
   dependencies:
     escape-string-regexp "^2.0.0"
 
-standard-changelog@^2.0.24:
+standard-changelog@2.0.24:
   version "2.0.24"
   resolved "https://registry.yarnpkg.com/standard-changelog/-/standard-changelog-2.0.24.tgz#a4a9e821942e26575ebb7562d8af4061f92a9825"
   integrity sha512-Tp0y5rkB8BKoURus4+fMcOXUpP1K2MrHAlMhMrBsz+25Evbn/72MdNN0IGVTctp7gioRXaeSb2HnfRY1PRaSyg==
@@ -2807,7 +2807,7 @@ yargs@^15.3.1:
     y18n "^4.0.0"
     yargs-parser "^18.1.1"
 
-yesno@^0.3.1:
+yesno@0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/yesno/-/yesno-0.3.1.tgz#3b2150158ee9b3f192a42313dd189c439f26c0ba"
   integrity sha512-7RbCXegyu6DykWPWU0YEtW8gFJH8KBL2d5l2fqB0XpkH0Y9rk59YSSWpzEv7yNJBGAouPc67h3kkq0CZkpBdFw==
