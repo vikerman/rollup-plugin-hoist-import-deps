@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.3.0...v0.3.1) (2020-05-23)
+
+
+### Bug Fixes
+
+* fix `transform` for cases when there is no actual dynamic import ([f86329a](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/f86329a68fb8deffe91c831a19b6bfdd7cca4e72))
+
+
+
 # [0.3.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.2.0...v0.3.0) (2020-05-21)
 
 
