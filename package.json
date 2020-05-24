@@ -40,7 +40,7 @@
   "devDependencies": {
     "ava": "3.8.2",
     "rimraf": "3.0.2",
-    "rollup": "2.10.8",
+    "rollup": "2.10.9",
     "semver": "7.3.2",
     "standard-changelog": "2.0.24",
     "yesno": "0.3.1"
