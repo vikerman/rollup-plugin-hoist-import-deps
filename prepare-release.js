@@ -3,7 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const semver = require('semver');
-const { exec } = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 const yesno = require('yesno');
 
 if (process.argv.length < 3) {
@@ -19,26 +20,26 @@ if (semver.valid(version) == null) {
 
 process.chdir(__dirname);
 
-// Update package.json
-console.log('Updating package.json...');
-const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
-if (!semver.gt(version, pkg.version)) {
-  console.error(`New version ${version} is not greater than current version ${pkg.version}`);
-  process.exit(1);
-}
-pkg.version = version;
-fs.writeFileSync('./package.json', `${JSON.stringify(pkg, null, '  ')}\n`);
+async function update() {
+  // Update package.json
+  console.log('Updating package.json...');
+  const pkg = JSON.parse(fs.readFileSync('./package.json').toString());
+  if (!semver.gt(version, pkg.version)) {
+    console.error(`New version ${version} is not greater than current version ${pkg.version}`);
+    process.exit(1);
+  }
+  pkg.version = version;
+  fs.writeFileSync('./package.json', `${JSON.stringify(pkg, null, '  ')}\n`);
 
-// Run standard-changelog
-console.log('Running standard-changelog...');
-exec('./node_modules/.bin/standard-changelog', err => {
-  if (err) {
+  // Run standard-changelog
+  console.log('Running standard-changelog...');
+  try {
+    await exec('./node_modules/.bin/standard-changelog');
+  } catch (err) {
     console.error(err);
     process.exit(1);
   }
-});
 
-async function commitAndPush() {
   // Commit to git after prompting user
   let ok = await yesno({
     question: 'Commit changes to git and add tag (y/N)?',
@@ -50,18 +51,19 @@ async function commitAndPush() {
     process.exit(0);
   }
 
-  exec(`git commit -a -m "release: v${version}"`, err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
-  exec(`git tag "v${version}"`, err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
+  try {
+    await exec(`git commit -a -m "release: v${version}"`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+
+  try {
+    await exec(`git tag "v${version}"`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 
   // Prompt to push to origin
   ok = await yesno({
@@ -74,19 +76,20 @@ async function commitAndPush() {
     process.exit(0);
   }
 
-  exec(`git push origin`, err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
-  exec(`git push origin --tags`, err => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  });
+  try {
+    await exec(`git push origin`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+
+  try {
+    await exec(`git push origin --tags`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 
   process.exit(0);
 }
-commitAndPush();
+update();
