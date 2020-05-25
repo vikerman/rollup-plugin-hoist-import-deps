@@ -20,9 +20,9 @@ This will
 
 ### Steps 2: Create a release in Github
 
-- Click on `Releases` tab and click on Tags (or go to https://github.com/vikerman/rollup-plugin-hoist-import-deps/tags)
-- Click on the newly created tag version name and click on `Edit release`
-- Set the version name to same as tag name
+- Click on `Releases` tab (or go to https://github.com/vikerman/rollup-plugin-hoist-import-deps/releases)
+- Click on the newly created tag version name and click on `Edit tag`
+- Set the release title to same as tag name (Ex. v0.3.3)
 - Click on `Publish release` to create a release.
 
 This should in turn kick off the release Github Action at
