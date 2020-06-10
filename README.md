@@ -139,8 +139,8 @@ export { myFunction };
 ```
 
 Using preload link tags preserves the load order of the transitive imports of
-the dynamically loaded chunk. However it is not supported in all browsers
-including Firefox where it is behind a flag. The full compatibility across
+the dynamically loaded chunk. However, it is not supported in all browsers
+including Firefox where it is behind a flag (though [it is slated to be enabled by default with the release of Firefox 79](https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Experimental_features#HTML) [on 2020-07-28](https://wiki.mozilla.org/Release_Management/Calendar)). The full compatibility across
 browsers can be found [here](https://caniuse.com/#feat=link-rel-preload).
 
 Dynamic imports on the other hand should be transformed properly to support
