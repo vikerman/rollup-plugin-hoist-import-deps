@@ -83,6 +83,30 @@ test(`don't add __loadDeps wrapper if module has no (actual) dynamic imports`, t
   t.is(parseCalled, true);
 });
 
+test(`use link preload as method to preload by default`, t => {
+  const plugin = hoistImportDeps();
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`document.createElement('link')`) !== -1);
+});
+
+test(`use dynamic import if method is set to 'import'`, t => {
+  const plugin = hoistImportDeps({ method: 'import' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`import(dep)`) !== -1);
+});
+
+test(`add crossorigin attribute by default`, t => {
+  const plugin = hoistImportDeps();
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`crossorigin: 'anonymous'`) !== -1);
+});
+
+test(`don't add crossorigin attribute if options.setAnonymousCrossOrigin is set to false`, t => {
+  const plugin = hoistImportDeps({ setAnonymousCrossOrigin: false });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf('crossorigin') === -1);
+});
+
 METHODS.forEach(method => {
   FORMATS.forEach(format => {
     test(`${format}:${method}:e2e`, async t => {

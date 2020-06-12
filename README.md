@@ -31,6 +31,26 @@ export default {
 };
 ```
 
+## Options
+
+### `method`
+
+Type: `'preload' | 'import'`<br>
+Default: `'preload'`
+
+This controls whether to use link preload to preload the static dependencies or whether to use dynamic imports. The default is to use the link preload method.
+
+(See below for comparison of the methods)
+
+### `setAnonymousCrossOrigin`
+
+Type: `boolean`<br>
+Default: `true`
+
+Whether to set the crossorigin attribute of the link element to `'anonymous'` when using the link preload method. In certain cases setting this flag to `false` becomes necessary (See https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/12).
+
+Don't set this option to `false` unless you know what you are doing.
+
 ## Example
 
 Lets say you have a entry-point file `a.js` that dynamically imports `b.js`
