@@ -5,9 +5,12 @@ const VIRTUAL_ID_IMPORT = 'preloaddeps:import';
 const MARKER = '"__IMPORT_DEPS__"';
 
 export function hoistImportDeps(options) {
-  options = options || { method: 'preload' };
+  options = options || {};
+  options.method = options.method != null ? options.method : 'preload';
+  options.setAnonymousCrossOrigin =
+    options.setAnonymousCrossOrigin != null ? options.anononymousCrossOrigin : true;
 
-  // Get the static deps of a chunk and return them as list lietral of strings
+  // Get the static deps of a chunk and return them as list of strings
   // that can be passed as arguments to module preload method(__loadeDeps).
   const getDeps = (chunkName, bundle) => {
     let name = chunkName.startsWith('./') ? chunkName.substring(2) : chunkName;
@@ -60,7 +63,9 @@ export function __loadDeps(baseImport, ...deps) {
     for (const dep of deps) {
       if (seen.has(dep)) continue;
       const el = document.createElement('link');
-      Object.assign(el, { href: dep, rel: 'preload', as: 'script', crossorigin: 'anonymous', onload: () => el.remove() });
+      Object.assign(el, { href: dep, rel: 'preload', as: 'script', ${
+        options.setAnonymousCrossOrigin ? `crossorigin: 'anonymous',` : ''
+      } onload: () => el.remove() });
       document.head.appendChild(el);
       seen.add(dep);
     }
