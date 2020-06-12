@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.3.3...v0.4.0) (2020-06-12)
+
+
+### Features
+
+* add option.setAnonymousCrossOrigin ([#19](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/19)) ([2498aff](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/2498afffaa9dcb0c90c6d3e8ef54a8588ba4087e)), closes [#12](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/12) [#18](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/18)
+
+
+
 ## [0.3.3](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.3.2...v0.3.3) (2020-05-25)
 
 
