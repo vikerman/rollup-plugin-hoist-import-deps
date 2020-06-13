@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.4.0...v0.5.0) (2020-06-13)
+
+
+### Features
+
+* add `baseUrl` option ([#23](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/23)) ([6da003c](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/6da003c423cb24f82e85a554251fd17fa7bbc757)), closes [#17](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/17) [#22](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/22) [#22](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/22)
+
+
+
 # [0.4.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.3.3...v0.4.0) (2020-06-12)
 
 
