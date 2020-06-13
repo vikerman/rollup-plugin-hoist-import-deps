@@ -4,11 +4,23 @@ import MagicString from 'magic-string';
 const VIRTUAL_ID_IMPORT = 'preloaddeps:import';
 const MARKER = '"__IMPORT_DEPS__"';
 
+function canonicalize(path) {
+  // Remove leading and trailing '/' from basePath.
+  if (path.startsWith('/')) {
+    path = path.substring(1);
+  }
+  if (path.endsWith('/')) {
+    path = path.substring(0, path.length - 1);
+  }
+  return path;
+}
+
 export function hoistImportDeps(options) {
   options = options || {};
   options.method = options.method != null ? options.method : 'preload';
   options.setAnonymousCrossOrigin =
     options.setAnonymousCrossOrigin != null ? options.anononymousCrossOrigin : true;
+  options.baseUrl = typeof options.baseUrl === 'string' ? canonicalize(options.baseUrl) : null;
 
   // Get the static deps of a chunk and return them as list of strings
   // that can be passed as arguments to module preload method(__loadeDeps).
@@ -60,11 +72,13 @@ export function hoistImportDeps(options) {
           return `const seen = new Set();
 export function __loadDeps(baseImport, ...deps) {
   if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
-    for (const dep of deps) {
+    for (let dep of deps) {
+      if (!dep.endsWith('.js')) dep += '.js';
       if (seen.has(dep)) continue;
       const el = document.createElement('link');
+      ${options.baseUrl != null ? `dep = '/${options.baseUrl}/' + dep.substring(2);` : ''};
       Object.assign(el, { href: dep, rel: 'preload', as: 'script', ${
-        options.setAnonymousCrossOrigin ? `crossorigin: 'anonymous',` : ''
+        options.setAnonymousCrossOrigin ? `crossOrigin: 'anonymous',` : ''
       } onload: () => el.remove() });
       document.head.appendChild(el);
       seen.add(dep);

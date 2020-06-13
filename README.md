@@ -40,7 +40,13 @@ Default: `'preload'`
 
 This controls whether to use link preload to preload the static dependencies or whether to use dynamic imports. The default is to use the link preload method.
 
-(See below for comparison of the methods)
+(See end of document for comparison of the methods)
+
+Example:
+
+```js
+    plugins: [hoistImportDeps({method: 'import'})],
+```
 
 ### `setAnonymousCrossOrigin`
 
@@ -49,7 +55,30 @@ Default: `true`
 
 Whether to set the crossorigin attribute of the link element to `'anonymous'` when using the link preload method. In certain cases setting this flag to `false` becomes necessary (See https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/12).
 
+Valid only when `method` is `preload`.
+
 Don't set this option to `false` unless you know what you are doing.
+
+Example:
+
+```js
+    plugins: [hoistImportDeps({setAnonymousCrossOrigin: false})],
+```
+
+### `baseUrl`
+
+Type: `String`<br>
+Default: `''`
+
+The `baseUrl` of be used when preloading the JavaScript files. This is the path of the JS files relative to the `index.html` (or whatever HTML that is loading the scripts).
+
+Valid only when `method` is `preload`.
+
+Example:
+
+```js
+    plugins: [hoistImportDeps({baseUrl: 'client'})],
+```
 
 ## Example
 

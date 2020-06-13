@@ -98,13 +98,43 @@ test(`use dynamic import if method is set to 'import'`, t => {
 test(`add crossorigin attribute by default`, t => {
   const plugin = hoistImportDeps();
   const moduleCode = plugin.load('preloaddeps:import');
-  t.assert(moduleCode.indexOf(`crossorigin: 'anonymous'`) !== -1);
+  t.assert(moduleCode.indexOf(`crossOrigin: 'anonymous'`) !== -1);
 });
 
 test(`don't add crossorigin attribute if options.setAnonymousCrossOrigin is set to false`, t => {
   const plugin = hoistImportDeps({ setAnonymousCrossOrigin: false });
   const moduleCode = plugin.load('preloaddeps:import');
-  t.assert(moduleCode.indexOf('crossorigin') === -1);
+  t.assert(moduleCode.indexOf('crossOrigin') === -1);
+});
+
+test(`use empty baseUrl by default`, t => {
+  const plugin = hoistImportDeps();
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`dep.substring(2)`) === -1);
+});
+
+test(`use baseUrl when specified with no '/'`, t => {
+  const plugin = hoistImportDeps({ baseUrl: 'client' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`dep = '/client/' + dep.substring(2);`) !== -1);
+});
+
+test(`use baseUrl when specified with leading '/'`, t => {
+  const plugin = hoistImportDeps({ baseUrl: '/client' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`dep = '/client/' + dep.substring(2);`) !== -1);
+});
+
+test(`use baseUrl when specified with both leading and trailing '/'`, t => {
+  const plugin = hoistImportDeps({ baseUrl: '/client/' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`dep = '/client/' + dep.substring(2);`) !== -1);
+});
+
+test(`use baseUrl when specified with trailing '/'`, t => {
+  const plugin = hoistImportDeps({ baseUrl: 'client/' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.assert(moduleCode.indexOf(`dep = '/client/' + dep.substring(2);`) !== -1);
 });
 
 METHODS.forEach(method => {
