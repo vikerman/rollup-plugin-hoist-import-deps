@@ -48,6 +48,22 @@ Example:
     plugins: [hoistImportDeps({method: 'import'})],
 ```
 
+### `baseUrl`
+
+Type: `String`<br>
+Default: `''`
+
+The `baseUrl` of be used when preloading the JavaScript files. This is the path of the JS files relative to the `index.html` (or whatever HTML that is loading the scripts).
+
+Valid only when `method` is `preload`.
+
+Example - If your index.html is served from `/` and the JS is served from `/client`, set `baseUrl` to `'client'` so that the
+`href` in the preload links are properly preficed with `/client'.
+
+```js
+    plugins: [hoistImportDeps({baseUrl: 'client'})],
+```
+
 ### `setAnonymousCrossOrigin`
 
 Type: `boolean`<br>
@@ -63,21 +79,6 @@ Example:
 
 ```js
     plugins: [hoistImportDeps({setAnonymousCrossOrigin: false})],
-```
-
-### `baseUrl`
-
-Type: `String`<br>
-Default: `''`
-
-The `baseUrl` of be used when preloading the JavaScript files. This is the path of the JS files relative to the `index.html` (or whatever HTML that is loading the scripts).
-
-Valid only when `method` is `preload`.
-
-Example:
-
-```js
-    plugins: [hoistImportDeps({baseUrl: 'client'})],
 ```
 
 ## Example
