@@ -66,7 +66,7 @@ export function hoistImportDeps(options) {
   for (const dep of deps) {
     import(dep);
   }
-  return baseImport;
+  return import(baseImport);
 }`;
         } else {
           return `const seen = new Set();
@@ -84,7 +84,7 @@ export function __loadDeps(baseImport, ...deps) {
       seen.add(dep);
     }
   }
-  return baseImport;
+  return import(baseImport);
 }`;
         }
       }
@@ -209,10 +209,10 @@ export function __loadDeps(baseImport, ...deps) {
                   },
                 });
               }
-            }
-
-            if (importChunkName) {
-              magicString.overwrite(node.start, node.end, getDeps(importChunkName, bundle));
+              if (importChunkName) {
+                magicString.overwrite(importExpr.start, importExpr.end, `"${importChunkName}"`);
+                magicString.overwrite(node.start, node.end, getDeps(importChunkName, bundle));
+              }
             }
           },
         });
