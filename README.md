@@ -134,7 +134,7 @@ function __loadDeps(baseImport, ...deps) {
     for (const dep of deps) {
       if (seen.has(dep)) continue;
       const el = document.createElement('link');
-      Object.assign(el, { href: dep, rel: 'preload', as: 'script', crossorigin: 'anonymous', onload: () => el.remove() });
+      Object.assign(el, { href: dep, rel: 'preload', as: 'script', crossOrigin: 'anonymous', onload: () => el.remove() });
       document.head.appendChild(el);
       seen.add(dep);
     }
