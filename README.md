@@ -139,11 +139,11 @@ function __loadDeps(baseImport, ...deps) {
       seen.add(dep);
     }
   }
-  return baseImport;
+  return import(baseImport);
 }
 
 async function myFunction(x) {
-  const { inc } = await __loadDeps(import('./b-467ea706.js'), './c-a66d9c36.js');
+  const { inc } = await __loadDeps('./b-467ea706.js', './c-a66d9c36.js');
 
   return x * inc(x);
 }
