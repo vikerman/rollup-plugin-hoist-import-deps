@@ -95,6 +95,16 @@ test(`use dynamic import if method is set to 'import'`, t => {
   t.assert(moduleCode.indexOf(`import(dep)`) !== -1);
 });
 
+test(`error if method is 'custom' and customPreload is not provided`, t => {
+  t.throws(() => hoistImportDeps({ method: 'custom' }));
+});
+
+test(`use custom preload when method is set to 'custom'`, t => {
+  const plugin = hoistImportDeps({ method: 'custom', customPreload: options => 'test' });
+  const moduleCode = plugin.load('preloaddeps:import');
+  t.is(moduleCode, 'test');
+});
+
 test(`add crossorigin attribute by default`, t => {
   const plugin = hoistImportDeps();
   const moduleCode = plugin.load('preloaddeps:import');

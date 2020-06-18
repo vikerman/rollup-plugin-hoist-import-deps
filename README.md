@@ -35,12 +35,14 @@ export default {
 
 ### `method`
 
-Type: `'preload' | 'import'`<br>
+Type: `'preload' | 'import' | 'custom'`<br>
 Default: `'preload'`
 
 This controls whether to use link preload to preload the static dependencies or whether to use dynamic imports. The default is to use the link preload method.
 
-(See end of document for comparison of the methods)
+See [Preload vs. Dynamic Import](#preload-vs-dynamic-import)) section for comparison of the two methods.
+
+If the `method` is set to `custom` then the preload code is used from `options.customPreload` string.
 
 Example:
 
@@ -62,6 +64,38 @@ Example - If your index.html is served from `/` and the JS is served from `/clie
 
 ```js
     plugins: [hoistImportDeps({baseUrl: 'client'})],
+```
+
+### `customPreload`
+
+Type: (options: Options) => String
+Default: undefined
+
+Specifies a function that acts as a custom preload loader. The function accepts the `rollup-plugin-hoist-import-deps` options as input and returns a string that represents the custom loader. Valid only when `method` is custom.
+
+The custom loader code should export a function with the signature `function __loadDeps(baseImport, ...deps)` that return the result of dynamically importing `baseImport` while preloading `deps`.
+
+For example, this can be used to overload the preload method to use `prefetch` instead of `preload` under certain conditions.
+
+Example:
+
+```js
+plugins: [
+  hoistImportDeps({
+    method: 'custom',
+    customPreload: (options) => {
+      return `
+export function __loadDeps(baseImport, ...deps) {
+  if (window.HOIST_PREFETCH) {
+    // Prefetch baseImport and deps
+    ...
+  } else {
+    // Do regular preload of deps and import of baseImport
+    ...
+  }
+}`,
+  }),
+];
 ```
 
 ### `setAnonymousCrossOrigin`
@@ -159,7 +193,7 @@ instead of sequentially after downloading and parsing the chunk
 This plugin can make a significant (positive) difference when say lazily loading
 code over a slow/high latency 3G connection (in the order of 1-2 seconds).
 
-## Preload Vs. Dynamic Import
+## Preload vs. Dynamic Import
 
 By default the plugin uses `preload` link tags as the method to preload the
 dependencies. It can be set to use dynamic imports instead by passing `{method: 'import'}` to the plugin.
