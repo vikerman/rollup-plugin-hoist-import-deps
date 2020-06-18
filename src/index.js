@@ -21,6 +21,11 @@ export function hoistImportDeps(options) {
   options.setAnonymousCrossOrigin =
     options.setAnonymousCrossOrigin != null ? options.anononymousCrossOrigin : true;
   options.baseUrl = typeof options.baseUrl === 'string' ? canonicalize(options.baseUrl) : null;
+  if (options.method === 'custom' && typeof options.customPreload !== 'function') {
+    throw new Error(
+      `hoistImportDeps: options.method was set to 'custom' but options.customPreload is not a function`,
+    );
+  }
 
   // Get the static deps of a chunk and return them as list of strings
   // that can be passed as arguments to module preload method(__loadeDeps).
@@ -61,7 +66,11 @@ export function hoistImportDeps(options) {
     // The actual preloading mechanism can be configured in the plugin.
     load(id) {
       if (id === VIRTUAL_ID_IMPORT) {
-        if (options.method === 'import') {
+        if (options.method === 'custom') {
+          // Insert custom preload code.
+          return options.customPreload(options);
+        } else if (options.method === 'import') {
+          // Use dynamic import to preload deps and baseImport.
           return `export function __loadDeps(baseImport, ...deps) {
   for (const dep of deps) {
     import(dep);
@@ -69,6 +78,8 @@ export function hoistImportDeps(options) {
   return import(baseImport);
 }`;
         } else {
+          // Use link preload for deps and dynamic import for baseImport.
+          // TODO: Have a fallback for older browsers where preload is not available.
           return `const seen = new Set();
 export function __loadDeps(baseImport, ...deps) {
   if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
