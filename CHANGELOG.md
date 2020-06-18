@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.5.0...v0.6.0) (2020-06-18)
+
+
+### Features
+
+* introduce 'custom' value for method ([#28](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/28)) ([bc646f2](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/bc646f22e484f5976c38bfd3343a96d1ec386721))
+
+
+
 # [0.5.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.4.0...v0.5.0) (2020-06-13)
 
 
