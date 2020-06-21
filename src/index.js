@@ -63,41 +63,56 @@ export function hoistImportDeps(options) {
     },
 
     // Add a virtual module for preloading dependencies.
-    // The actual preloading mechanism can be configured in the plugin.
     load(id) {
       if (id === VIRTUAL_ID_IMPORT) {
-        if (options.method === 'custom') {
-          // Insert custom preload code.
-          return options.customPreload(options);
-        } else if (options.method === 'import') {
-          // Use dynamic import to preload deps and baseImport.
-          return `export function __loadDeps(baseImport, ...deps) {
-  for (const dep of deps) {
-    import(dep);
+        // Use link preload for deps and dynamic import for baseImport.
+        // When window.HOIST_PREFETCH is true, use link prfetch for deps and baseImport.
+        // If the browser doesn't support the requested method(preload or prefetch)
+        // provide fallback (using fetch).
+        return `const seen = new Set();
+const requestIdleCallback = (typeof windows !== 'undefined' && window.requestIdleCallback) ||
+  function (cb) {
+    const start = Date.now();
+    return setTimeout(function () {
+      cb({
+        didTimeout: false,
+        timeRemaining: function () {
+          return Math.max(0, 50 - (Date.now() - start));
+      },
+    });
+  }, 1);
+};
+function preloadOrPrefetch(dep, method) {
+  const el = document.createElement('link');
+  const hasSupport = el.relList && el.relList.supports && el.relList.supports(method);
+  if (hasSupport) {
+    ${options.baseUrl != null ? `dep = '/${options.baseUrl}/' + dep.substring(2);` : ''};
+    Object.assign(el, { href: dep, rel: method, as: 'script', ${
+      options.setAnonymousCrossOrigin ? `crossOrigin: 'anonymous',` : ''
+    } onload: () => el.remove() });
+    document.head.appendChild(el);
+  } else if (window.fetch != null) {
+    const fetchFn = () => fetch(dep, {credentials: 'same-origin'});
+    if (method === 'preload') {
+      fetchFn();
+    } else {
+      requestIdleCallback(fetchFn, {timeout: 2000});
+    }
   }
-  return import(baseImport);
-}`;
-        } else {
-          // Use link preload for deps and dynamic import for baseImport.
-          // TODO: Have a fallback for older browsers where preload is not available.
-          return `const seen = new Set();
+  return null;
+}
 export function __loadDeps(baseImport, ...deps) {
+  const method = (typeof window !== 'undefined' && !!window['HOIST_PREFETCH']) ? 'prefetch' : 'preload';
   if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
     for (let dep of deps) {
       if (!dep.endsWith('.js')) dep += '.js';
       if (seen.has(dep)) continue;
-      const el = document.createElement('link');
-      ${options.baseUrl != null ? `dep = '/${options.baseUrl}/' + dep.substring(2);` : ''};
-      Object.assign(el, { href: dep, rel: 'preload', as: 'script', ${
-        options.setAnonymousCrossOrigin ? `crossOrigin: 'anonymous',` : ''
-      } onload: () => el.remove() });
-      document.head.appendChild(el);
+      preloadOrPrefetch(dep, method);
       seen.add(dep);
     }
   }
-  return import(baseImport);
+  return (method === 'preload') ? import(baseImport) : preloadOrPrefetch(baseImport, method);
 }`;
-        }
       }
       return null;
     },

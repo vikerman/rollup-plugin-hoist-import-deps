@@ -9,7 +9,6 @@ process.chdir(__dirname);
 
 // Test with all output formats that support code splitting.
 const FORMATS = ['es', 'system', 'cjs', 'amd'];
-const METHODS = ['preload', 'import'];
 
 test(`add __loadDeps wrapper if module has dynamic import`, t => {
   const plugin = hoistImportDeps();
@@ -83,28 +82,6 @@ test(`don't add __loadDeps wrapper if module has no (actual) dynamic imports`, t
   t.is(parseCalled, true);
 });
 
-test(`use link preload as method to preload by default`, t => {
-  const plugin = hoistImportDeps();
-  const moduleCode = plugin.load('preloaddeps:import');
-  t.assert(moduleCode.indexOf(`document.createElement('link')`) !== -1);
-});
-
-test(`use dynamic import if method is set to 'import'`, t => {
-  const plugin = hoistImportDeps({ method: 'import' });
-  const moduleCode = plugin.load('preloaddeps:import');
-  t.assert(moduleCode.indexOf(`import(dep)`) !== -1);
-});
-
-test(`error if method is 'custom' and customPreload is not provided`, t => {
-  t.throws(() => hoistImportDeps({ method: 'custom' }));
-});
-
-test(`use custom preload when method is set to 'custom'`, t => {
-  const plugin = hoistImportDeps({ method: 'custom', customPreload: options => 'test' });
-  const moduleCode = plugin.load('preloaddeps:import');
-  t.is(moduleCode, 'test');
-});
-
 test(`add crossorigin attribute by default`, t => {
   const plugin = hoistImportDeps();
   const moduleCode = plugin.load('preloaddeps:import');
@@ -147,25 +124,23 @@ test(`use baseUrl when specified with trailing '/'`, t => {
   t.assert(moduleCode.indexOf(`dep = '/client/' + dep.substring(2);`) !== -1);
 });
 
-METHODS.forEach(method => {
-  FORMATS.forEach(format => {
-    test(`${format}:${method}:e2e`, async t => {
-      // Produce output with plugin.
-      const bundle = await rollup({
-        input: './fixtures/simple/a.js',
-        plugins: [hoistImportDeps({ method })],
-        onwarn: _ => null,
-      });
-      await bundle.write({ format, dir: `./output/${format}/${method}` });
-
-      // Compare with snapshot.
-      t.snapshot(fs.readFileSync(`./output/${format}/${method}/a.js`).toString());
-
-      // Load the output to sanity check the produced code.
-      if (format == 'cjs') {
-        const { threeXPlusOne } = require(`./output/cjs/${method}/a.js`);
-        t.is(await threeXPlusOne(20), 61);
-      }
+FORMATS.forEach(format => {
+  test(`${format}:e2e`, async t => {
+    // Produce output with plugin.
+    const bundle = await rollup({
+      input: './fixtures/simple/a.js',
+      plugins: [hoistImportDeps({})],
+      onwarn: _ => null,
     });
+    await bundle.write({ format, dir: `./output/${format}` });
+
+    // Compare with snapshot.
+    t.snapshot(fs.readFileSync(`./output/${format}/a.js`).toString());
+
+    // Load the output to sanity check the produced code.
+    if (format === 'cjs') {
+      const { threeXPlusOne } = require(`./output/cjs/a.js`);
+      t.is(await threeXPlusOne(20), 61);
+    }
   });
 });
