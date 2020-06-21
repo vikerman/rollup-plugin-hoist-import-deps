@@ -1,3 +1,17 @@
+# [1.0.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.6.0...v1.0.0) (2020-06-21)
+
+
+### Features
+
+* support prefetch ([#31](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/31)) ([ad7068c](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/ad7068c4af4d0968dd8c886b015723df1cff37a2))
+
+
+### BREAKING CHANGES
+
+* - Remove `method` and `customPreload` options since the standard preload provides fallbacks for browsers that don't support preload.
+
+
+
 # [0.6.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.5.0...v0.6.0) (2020-06-18)
 
 
