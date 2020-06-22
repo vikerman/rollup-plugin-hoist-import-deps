@@ -70,7 +70,7 @@ export function hoistImportDeps(options) {
         // If the browser doesn't support the requested method(preload or prefetch)
         // provide fallback (using fetch).
         return `const seen = new Set();
-const requestIdleCallback = (typeof windows !== 'undefined' && window.requestIdleCallback) ||
+const requestIdleCallback = (typeof window !== 'undefined' && window.requestIdleCallback) ||
   function (cb) {
     const start = Date.now();
     return setTimeout(function () {
