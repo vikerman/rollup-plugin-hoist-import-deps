@@ -1,3 +1,13 @@
+## [1.0.1](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.0...v1.0.1) (2020-06-22)
+
+
+### Bug Fixes
+
+* don't preload modules that are already prefetched ([#34](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/34)) ([04fea61](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/04fea61b6164da0777d3b77d44c0beabee51378d))
+* fix typo in preloaddeps ([#33](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/33)) ([7c06c8b](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/7c06c8b666dfb20084ce5f11813d7328d6995a8e))
+
+
+
 # [1.0.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v0.6.0...v1.0.0) (2020-06-21)
 
 
