@@ -83,6 +83,10 @@ const requestIdleCallback = (typeof window !== 'undefined' && window.requestIdle
   }, 1);
 };
 function preloadOrPrefetch(dep, method) {
+  if (seen.has(dep)) {
+    return null;
+  };
+  seen.add(dep);
   const el = document.createElement('link');
   const hasSupport = el.relList && el.relList.supports && el.relList.supports(method);
   if (hasSupport) {
@@ -106,9 +110,7 @@ export function __loadDeps(baseImport, ...deps) {
   if (typeof document !== 'undefined' && document.createElement != null && document.head != null) {
     for (let dep of deps) {
       if (!dep.endsWith('.js')) dep += '.js';
-      if (seen.has(dep)) continue;
       preloadOrPrefetch(dep, method);
-      seen.add(dep);
     }
   }
   return (method === 'preload') ? import(baseImport) : preloadOrPrefetch(baseImport, method);
