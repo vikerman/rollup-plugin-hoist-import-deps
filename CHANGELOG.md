@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.1...v1.0.2) (2020-07-02)
+
+
+### Bug Fixes
+
+* return Promise<{}> during prefetch instead of null ([#37](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/37)) ([20c865f](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/20c865f9f8a955c738a6deabda4438998a4f3b36))
+
+
+
 ## [1.0.1](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.0...v1.0.1) (2020-06-22)
 
 

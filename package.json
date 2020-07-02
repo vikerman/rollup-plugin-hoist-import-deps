@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-hoist-import-deps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Preload static imports of a chunk when it is dynamically imported",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
