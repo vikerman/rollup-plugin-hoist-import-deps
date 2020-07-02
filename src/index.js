@@ -113,7 +113,7 @@ export function __loadDeps(baseImport, ...deps) {
       preloadOrPrefetch(dep, method);
     }
   }
-  return (method === 'preload') ? import(baseImport) : preloadOrPrefetch(baseImport, method);
+  return (method === 'preload') ? import(baseImport) : (() => { preloadOrPrefetch(baseImport, method); return Promise.resolve({}); })();
 }`;
       }
       return null;
