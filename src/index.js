@@ -84,26 +84,39 @@ const requestIdleCallback = (typeof window !== 'undefined' && window.requestIdle
 };
 function preloadOrPrefetch(dep, method) {
   if (seen.has(dep)) {
-    return null;
+    return Promise.resolve({});
   };
   seen.add(dep);
-  const el = document.createElement('link');
-  const hasSupport = el.relList && el.relList.supports && el.relList.supports(method);
-  if (hasSupport) {
-    ${options.baseUrl != null ? `dep = '/${options.baseUrl}/' + dep.substring(2);` : ''};
-    Object.assign(el, { href: dep, rel: method, as: 'script', ${
-      options.setAnonymousCrossOrigin ? `crossOrigin: 'anonymous',` : ''
-    } onload: () => el.remove() });
-    document.head.appendChild(el);
-  } else if (window.fetch != null) {
-    const fetchFn = () => fetch(dep, {credentials: 'same-origin'});
-    if (method === 'preload') {
-      fetchFn();
+  return new Promise((res, rej) => {
+    const el = document.createElement('link');
+    const hasSupport = el.relList && el.relList.supports && el.relList.supports(method);
+    if (hasSupport) {
+      ${options.baseUrl != null ? `dep = '/${options.baseUrl}/' + dep.substring(2);` : ''};
+      Object.assign(el, { href: dep, rel: method, as: 'script', ${
+        options.setAnonymousCrossOrigin ? `crossOrigin: 'anonymous',` : ''
+      } onload: () => { el.remove(); res({}); }, onerror: () => { el.remove(); rej(); }});
+      document.head.appendChild(el);
     } else {
-      requestIdleCallback(fetchFn, {timeout: 2000});
+      let fetchFn;
+      if (window.fetch != null) {
+        fetchFn = () => fetch(dep, {credentials: 'same-origin'}).then(() => { return {}; });
+      } else {
+        fetchFn = () => new Promise((ires, irej) => {
+          const req = new XMLHttpRequest();
+          req.open('GET', dep, req.withCredentials=true);
+          req.onload = () => {
+            (req.status === 200) ? ires({}) : irej();
+          };
+          req.send();    
+        });
+      }
+      if (method === 'preload') {
+        fetchFn().then(res).catch(rej);
+      } else {
+        requestIdleCallback(() => fetchFn().then(res).catch(rej), {timeout: 2000});
+      }
     }
-  }
-  return null;
+  });
 }
 export function __loadDeps(baseImport, ...deps) {
   const method = (typeof window !== 'undefined' && !!window['HOIST_PREFETCH']) ? 'prefetch' : 'preload';
@@ -113,7 +126,7 @@ export function __loadDeps(baseImport, ...deps) {
       preloadOrPrefetch(dep, method);
     }
   }
-  return (method === 'preload') ? import(baseImport) : (() => { preloadOrPrefetch(baseImport, method); return Promise.resolve({}); })();
+  return (method === 'preload') ? import(baseImport) : preloadOrPrefetch(baseImport, method);
 }`;
       }
       return null;
