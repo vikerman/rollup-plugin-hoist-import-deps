@@ -1,3 +1,12 @@
+## [1.0.3](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.2...v1.0.3) (2020-07-12)
+
+
+### Bug Fixes
+
+* use xhr as fallback for prefetch if fetch isn't available ([#43](https://github.com/vikerman/rollup-plugin-hoist-import-deps/issues/43)) ([1e27e2a](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/1e27e2aee55e69607306eb4c26c1def46b781060))
+
+
+
 ## [1.0.2](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.1...v1.0.2) (2020-07-02)
 
 
