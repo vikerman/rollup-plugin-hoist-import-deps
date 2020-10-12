@@ -21,11 +21,6 @@ export function hoistImportDeps(options) {
   options.setAnonymousCrossOrigin =
     options.setAnonymousCrossOrigin != null ? options.anononymousCrossOrigin : true;
   options.baseUrl = typeof options.baseUrl === 'string' ? canonicalize(options.baseUrl) : null;
-  if (options.method === 'custom' && typeof options.customPreload !== 'function') {
-    throw new Error(
-      `hoistImportDeps: options.method was set to 'custom' but options.customPreload is not a function`,
-    );
-  }
 
   // Get the static deps of a chunk and return them as list of strings
   // that can be passed as arguments to module preload method(__loadeDeps).
