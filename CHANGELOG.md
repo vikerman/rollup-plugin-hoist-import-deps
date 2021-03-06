@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.3...v1.1.0) (2021-03-06)
+
+
+### Features
+
+* set window.HAS_HOIST_PREFETCH ([a61406f](https://github.com/vikerman/rollup-plugin-hoist-import-deps/commit/a61406f3947003122dad0ca4b9212285f88f3de9))
+
+
+
 ## [1.0.3](https://github.com/vikerman/rollup-plugin-hoist-import-deps/compare/v1.0.2...v1.0.3) (2020-07-12)
 
 
