@@ -122,7 +122,9 @@ export function __loadDeps(baseImport, ...deps) {
     }
   }
   return (method === 'preload') ? import(baseImport) : preloadOrPrefetch(baseImport, method);
-}`;
+}
+window['HAS_HOIST_PREFETCH'] = true;
+`;
       }
       return null;
     },

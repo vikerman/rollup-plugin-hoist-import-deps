@@ -139,8 +139,10 @@ FORMATS.forEach(format => {
 
     // Load the output to sanity check the produced code.
     if (format === 'cjs') {
+      global.window = {};
       const { threeXPlusOne } = require(`./output/cjs/a.js`);
       t.is(await threeXPlusOne(20), 61);
+      t.is(global.window['HAS_HOIST_PREFETCH'], true);
     }
   });
 });
