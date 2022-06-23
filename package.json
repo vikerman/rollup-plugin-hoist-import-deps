@@ -44,7 +44,7 @@
     "rollup": "2.23.1",
     "semver": "7.3.5",
     "standard-changelog": "2.0.27",
-    "yesno": "0.3.1"
+    "yesno": "0.4.0"
   },
   "dependencies": {
     "estree-walker": "^2.0.1",
