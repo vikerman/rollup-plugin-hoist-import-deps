@@ -40,7 +40,7 @@
   "homepage": "https://github.com/vikerman/rollup-plugin-hoist-import-deps#readme",
   "devDependencies": {
     "ava": "3.15.0",
-    "rimraf": "3.0.2",
+    "rimraf": "4.4.1",
     "rollup": "2.23.1",
     "semver": "7.3.5",
     "standard-changelog": "2.0.27",
