@@ -43,7 +43,7 @@
     "rimraf": "3.0.2",
     "rollup": "2.23.1",
     "semver": "7.3.5",
-    "standard-changelog": "2.0.27",
+    "standard-changelog": "3.0.0",
     "yesno": "0.3.1"
   },
   "dependencies": {
