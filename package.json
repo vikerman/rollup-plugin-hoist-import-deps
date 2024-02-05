@@ -42,7 +42,7 @@
     "ava": "3.15.0",
     "rimraf": "3.0.2",
     "rollup": "2.23.1",
-    "semver": "7.3.5",
+    "semver": "7.6.0",
     "standard-changelog": "2.0.27",
     "yesno": "0.3.1"
   },
